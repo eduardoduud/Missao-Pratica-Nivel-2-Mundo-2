@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ordenando</title>
+    <script src="./ordenando.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Ordenando Valores</h1>
+      <input class="form-control" type="number" id="valor" />
+      <button class="btn btn-primary mt-2" onclick="add()">Adicionar</button>
+      <hr />
+      <div class="form-group">
+        <select class="form-control" id="algoritmo">
+          <option value="bubbleSort" selected>Bubble Sort</option>
+          <option value="selectionSort">Selection Sort</option>
+          <option value="quickSort">Quick Sort</option>
+        </select>
+      </div>
+      <button class="btn btn-primary mt-2" onclick="ordenar()">Ordenar</button>
+      <button class="btn btn-primary mt-2" onclick="misturar()">
+        Misturar
+      </button>
+      <hr />
+      <ul id="valores"></ul>
+    </div>
+  </body>
+  <script>
+    var valores = [];
+
+    function add() {
+      var inputValue = document.getElementById("valor").value;
+      var list = document.getElementById("valores");
+      var listItem = document.createElement("li");
+      var textNode = document.createTextNode(inputValue);
+
+      listItem.appendChild(textNode);
+
+      list.appendChild(listItem);
+      valores.push(parseInt(inputValue));
+      console.log("add chamada");
+      console.log(valores);
+    }
+
+    function ordenar() {
+      var listaValores = document.getElementById("valores");
+      var algoritmoSelecionado = document.getElementById("algoritmo");
+
+      var valores = Array.from(listaValores.children).map(function (li) {
+        return parseInt(li.innerHTML);
+      });
+
+      var algoritmo =
+        algoritmoSelecionado.options[algoritmoSelecionado.selectedIndex].value;
+
+      if (algoritmo === "bubbleSort") {
+        bubbleSort(valores);
+      } else if (algoritmo === "selectionSort") {
+        selectionSort(valores);
+      } else if (algoritmo === "quickSort") {
+        quickSort(valores, 0, valores.length - 1);
+      }
+
+      var valoresOrdenados = valores
+        .map(function (value) {
+          return "<li>" + value + "</li>";
+        })
+        .reduce(function (total, currentValue) {
+          return total + currentValue;
+        });
+
+      listaValores.innerHTML = valoresOrdenados;
+      console.log("ordenar chamada");
+    }
+
+    function misturar() {
+      var listaValores = document.getElementById("valores");
+
+      var valores = Array.from(listaValores.children).map(function (li) {
+        return parseInt(li.innerHTML);
+      });
+
+      shuffle(valores);
+
+      var valoresEmbaralhados = valores
+        .map(function (value) {
+          return "<li>" + value + "</li>";
+        })
+        .reduce(function (accumulator, currentValue) {
+          return accumulator + currentValue;
+        });
+
+      listaValores.innerHTML = valoresEmbaralhados;
+      console.log("misturar chamada");
+    }
+  </script>
+</html>
